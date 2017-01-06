@@ -14,22 +14,6 @@ firebase.initializeApp({
 // messages.
 const messaging = firebase.messaging();
 
-// Handle incoming messages. Called when:
-// - a message is received while the app has focus
-// - the user clicks on an app notification created by a sevice worker
-//   `messaging.setBackgroundMessageHandler` handler.
-messaging.onMessage(function(payload) {
-  console.log('[firebase-messaging-sw.js] Received foreground message ', payload);
-  // Customize notification here
-  const notificationTitle = 'Foreground Message Title';
-  const notificationOptions = {
-    body: 'Foreground Message body.',
-    icon: '/firebase-logo.png'
-  };
-
-  return self.registration.showNotification(notificationTitle,
-      notificationOptions);
-});
 messaging.setBackgroundMessageHandler(function(payload) {
   console.log('[firebase-messaging-sw.js] Received background message ', payload);
   // Customize notification here
@@ -43,3 +27,10 @@ messaging.setBackgroundMessageHandler(function(payload) {
       notificationOptions);
 });
 // [END background_handler]
+
+self.addEventListener('notificationclick', function(event) {  
+  console.log('On notification click: ', event.notification.tag);  
+  // Android doesn't close the notification when you click on it  
+  // See: http://crbug.com/463146  
+  event.notification.close();
+});
