@@ -22,7 +22,7 @@ messaging.setBackgroundMessageHandler(function(payload) {
     var url = playload.data.url;
     const notificationTitle = playload.data.title;
     const notificationOptions = {
-        body: playload.data.body,
+        body: playload.data.msg,
         icon: '/firebase-logo.png',
         data: {
             url: url,
