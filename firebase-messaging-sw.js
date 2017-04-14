@@ -16,15 +16,20 @@ const messaging = firebase.messaging();
 
 //----------------------------Foregound message end------------------------------//
 messaging.setBackgroundMessageHandler(function(payload) {
-  // Customize notification here
-  console.log(playload);
-  const notificationTitle = 'Background Message Title';
-  const notificationOptions = {
-    body: 'Background Message body.',
-    icon: '/firebase-logo.png'
-  };
-    var msg_id = event.notification.data.msg_id;
-    var user_id = event.notification.data.user_id;
+    // Customize notification here
+    var msg_id = playload.data.msg_id;
+    var user_id =playload.data.user_id;
+    var url = playload.data.url;
+    const notificationTitle = playload.data.title;
+    const notificationOptions = {
+        body: playload.data.body,
+        icon: '/firebase-logo.png',
+        data: {
+            url: url,
+            msg_id: msg_id,
+            user_id: user_id
+        }
+    };
     var params = "msg_id="+msg_id+"&user_id="+user_id+"&status=received";
     updateStatus('received', params);
 
@@ -54,7 +59,6 @@ self.addEventListener('notificationclick', function (event) {
                     } else {
                         var msg_id = event.notification.data.msg_id;
                         var user_id = event.notification.data.user_id;
-                        var status = event.notification.data.status;
                         var params = "msg_id="+msg_id+"&user_id="+user_id+"&status=opened";
                         updateStatus('opened', params);
                         return clients.openWindow(event.notification.data.url);    
@@ -63,6 +67,7 @@ self.addEventListener('notificationclick', function (event) {
             })
             );
 });
+
 
 
 function updateStatus(status, params) {
