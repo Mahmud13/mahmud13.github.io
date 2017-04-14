@@ -59,24 +59,11 @@ self.addEventListener('notificationclick', function (event) {
                     } else {
                         var msg_id = event.notification.data.msg_id;
                         var user_id = event.notification.data.user_id;
-                        var params = "msg_id="+msg_id+"&user_id="+user_id+"&status=opened";
-                        updateStatus('opened', params);
+                        //var params = "msg_id="+msg_id+"&user_id="+user_id+"&status=opened";
+                        //updateStatus('opened', params);
                         return clients.openWindow(event.notification.data.url);    
                     }
                 }
             })
             );
 });
-
-
-
-function updateStatus(status, params) {
-    var url = "http://realpush.anontech.info/notification/" + status;
-    var http = window.XDomainRequest ? new window.XDomainRequest() : new XMLHttpRequest();
-    http.open("POST", url, true);
-    http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    http.setRequestHeader("Content-length", params.length);
-    http.setRequestHeader("Connection", "close");
-    http.send(params);
-}
-
