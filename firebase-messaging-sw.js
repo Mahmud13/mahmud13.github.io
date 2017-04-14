@@ -20,10 +20,13 @@ messaging.setBackgroundMessageHandler(function(payload) {
     var msg_id = payload.data.msg_id;
     var user_id =payload.data.user_id;
     var url = payload.data.url;
+    var sound = payload.data.sound;
+    var icon = payload.data.icon;
     const notificationTitle = payload.data.title;
     const notificationOptions = {
-        body: payload.data.msg,
-        icon: '/firebase-logo.png',
+        body: payload.data.body,
+        icon: icon,
+        sound: sound,
         data: {
             url: url,
             msg_id: msg_id,
@@ -68,8 +71,9 @@ self.addEventListener('notificationclick', function (event) {
             );
 });
 
+
 function updateStatus(status, params) {
-    var url = "http://realpush.anontech.info/notification/" + status;
+    var url = "https://alerts.thedailystar.net/notification/" + status;
     fetch(url, {  
       method: 'post',  
       headers: {  
@@ -77,11 +81,8 @@ function updateStatus(status, params) {
       },  
       body: params  
     })
-    .then(json)  
-    .then(function (data) {  
-      console.log('Request succeeded with JSON response', data);  
-    })  
-  .catch(function (error) {  
-    console.log('Request failed', error);  
-  });
+    .catch(function (error) {  
+        console.log('Request failed', error);  
+    });
 }
+
